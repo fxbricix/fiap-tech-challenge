@@ -31,4 +31,6 @@ public class AuthController {
         var login = securityService.login(usuarioDTO, consulta.getSenhaHash());
         return ResponseEntity.ok(login);
     }
+
+    //todo troca de senha
 }
