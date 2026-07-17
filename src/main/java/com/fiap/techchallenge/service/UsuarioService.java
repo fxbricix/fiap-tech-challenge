@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
+import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.entity.UsuarioEntity;
 import com.fiap.techchallenge.exception.NotFoundException;
@@ -11,6 +12,7 @@ import com.fiap.techchallenge.repository.UsuarioJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -63,6 +65,23 @@ public class UsuarioService {
                 }, () -> {
                     throw new NotFoundException("Usuário não encontrado");
                 });
+    }
+
+    @Transactional
+    public void atualizarSenha(TrocaSenhaUsuarioDTO trocaSenhaUsuarioDTO){
+        var usuarioSalvo = usuarioJpaRepository.findByEmail(trocaSenhaUsuarioDTO.email());
+        if (usuarioSalvo.isPresent()) {
+            var usuario = usuarioSalvo.get();
+            if (securityService.compararSenha(trocaSenhaUsuarioDTO.senhaAtual(), usuario.getSenhaHash())) {
+                usuario.setSenhaHash(securityService.criptografarSenha(trocaSenhaUsuarioDTO.novaSenha()));
+                usuario.setAtualizadoEm(Instant.now());
+                usuarioJpaRepository.save(usuario);
+            } else {
+                throw new IllegalArgumentException("Senha atual incorreta");
+            }
+        } else {
+            throw new NotFoundException("Usuário não encontrado");
+        }
     }
 }
 

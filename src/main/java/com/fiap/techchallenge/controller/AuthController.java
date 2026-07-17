@@ -1,17 +1,12 @@
 package com.fiap.techchallenge.controller;
 
-import com.fiap.techchallenge.dto.CriarUsuarioDTO;
 import com.fiap.techchallenge.dto.LoginUsuarioDTO;
-import com.fiap.techchallenge.dto.UsuarioDTO;
+import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
 import com.fiap.techchallenge.service.SecurityService;
 import com.fiap.techchallenge.service.UsuarioService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -32,5 +27,9 @@ public class AuthController {
         return ResponseEntity.ok(login);
     }
 
-    //todo troca de senha
+    @PatchMapping("/trocar-senha")
+    public ResponseEntity<Object> trocarSenha(@RequestBody @Valid TrocaSenhaUsuarioDTO usuarioDTO) {
+        usuarioService.atualizarSenha(usuarioDTO);
+        return ResponseEntity.ok("Senha alterada com sucesso");
+    }
 }

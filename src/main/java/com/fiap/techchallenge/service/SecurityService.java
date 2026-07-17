@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.LoginUsuarioDTO;
+import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
 import com.fiap.techchallenge.exception.NotAuthorizedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
