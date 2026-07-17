@@ -10,4 +10,5 @@ import java.util.List;
 public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Integer>{
     public UsuarioEntity findByNomeUsuario(String nomeUsuario);
     public UsuarioEntity findByEmail(String email);
+    public boolean existsByEmail(String email);
 }
