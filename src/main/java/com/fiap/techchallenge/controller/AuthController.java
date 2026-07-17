@@ -32,9 +32,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUsuario(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
+    public ResponseEntity<Object> loginUsuario(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
         var consulta = usuarioService.buscarUsuarioPorEmail(usuarioDTO.email());
-        securityService.login(usuarioDTO, consulta.getSenhaHash());
-        return ResponseEntity.ok("Login bem-sucedido");
+        var login = securityService.login(usuarioDTO, consulta.getSenhaHash());
+        return ResponseEntity.ok(login);
     }
 }
