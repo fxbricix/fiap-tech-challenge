@@ -2,6 +2,7 @@ package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
+import com.fiap.techchallenge.entity.UsuarioEntity;
 import com.fiap.techchallenge.exception.NotFoundException;
 import com.fiap.techchallenge.mapper.ConsultaUsuarioMapper;
 import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
@@ -34,6 +35,12 @@ public class UsuarioService {
             throw new IllegalArgumentException("Usuário com este email já existe");
         }
         usuarioJpaRepository.save(CriarUsuarioMapper.toEntity(usuarioDTO));
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioEntity buscarUsuarioPorEmail(String email) {
+        return usuarioJpaRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 }
 

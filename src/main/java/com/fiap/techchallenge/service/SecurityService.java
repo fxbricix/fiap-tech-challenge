@@ -1,5 +1,7 @@
 package com.fiap.techchallenge.service;
 
+import com.fiap.techchallenge.dto.LoginUsuarioDTO;
+import com.fiap.techchallenge.exception.NotAuthorizedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,14 @@ public class SecurityService {
 
     public String criptografarSenha(String senha) {
         return passwordEncoder.encode(senha);
+    }
+
+    public Object login(LoginUsuarioDTO usuarioDTO, String senhaSalva) {
+        if (compararSenha(usuarioDTO.senha(), senhaSalva)) {
+            return "Login bem-sucedido";
+        } else {
+            throw new NotAuthorizedException("Senha incorreta");
+        }
     }
 
     public boolean compararSenha(String senhaInformada, String senhaSalva){

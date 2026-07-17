@@ -67,6 +67,13 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 
+    @ExceptionHandler(NotAuthorizedException.class)
+    public ResponseEntity<ProblemDetail> handleNotAuthorized(NotAuthorizedException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        problemDetail.setDetail(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
+    }
+
     @ExceptionHandler({EmptyResultDataAccessException.class, NoSuchElementException.class, NotFoundException.class})
     public ResponseEntity<ProblemDetail> handleNotFound(RuntimeException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
