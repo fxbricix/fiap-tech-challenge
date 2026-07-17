@@ -23,4 +23,6 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@PathVariable String nome) {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }
+
+
 }

@@ -26,13 +26,13 @@ public class AuthController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody @Valid CriarUsuarioDTO usuarioDTO) {
+    public ResponseEntity<UsuarioDTO> cadastrar(@RequestBody @Valid CriarUsuarioDTO usuarioDTO) {
         usuarioService.criarUsuario(usuarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> loginUsuario(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
+    public ResponseEntity<Object> logar(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
         var consulta = usuarioService.buscarUsuarioPorEmail(usuarioDTO.email());
         var login = securityService.login(usuarioDTO, consulta.getSenhaHash());
         return ResponseEntity.ok(login);
