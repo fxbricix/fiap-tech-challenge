@@ -10,6 +10,8 @@ import com.fiap.techchallenge.repository.UsuarioJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UsuarioService {
 
@@ -22,10 +24,12 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public UsuarioDTO buscaPorNome(String nome) {
+    public List<UsuarioDTO> buscaPorNome(String nome) {
         return usuarioJpaRepository.findByNomeUsuario(nome)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"))
+                .stream()
                 .map(ConsultaUsuarioMapper::toDTO)
-                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+                .toList();
     }
 
     @Transactional

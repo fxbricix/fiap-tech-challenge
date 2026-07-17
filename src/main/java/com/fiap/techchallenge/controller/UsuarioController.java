@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/usuarios")
 @Slf4j
@@ -18,7 +20,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{nome}")
-    public ResponseEntity<UsuarioDTO> buscaUsuarioPorNome(@PathVariable String nome) {
+    public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@PathVariable String nome) {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }
 }
