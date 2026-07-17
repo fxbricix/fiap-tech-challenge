@@ -22,8 +22,6 @@ public class UsuarioController {
 
     @GetMapping("/{nome}")
     public ResponseEntity<UsuarioDTO> buscaUsuarioPorNome(@PathVariable String nome) {
-        return usuarioService.buscaPorNome(nome)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }
 }

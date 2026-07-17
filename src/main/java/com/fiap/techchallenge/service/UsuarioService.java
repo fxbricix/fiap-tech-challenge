@@ -2,6 +2,7 @@ package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
+import com.fiap.techchallenge.exception.NotFoundException;
 import com.fiap.techchallenge.mapper.ConsultaUsuarioMapper;
 import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
 import com.fiap.techchallenge.repository.UsuarioJpaRepository;
@@ -22,9 +23,10 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<UsuarioDTO> buscaPorNome(String nome) {
-        return Optional.ofNullable(usuarioJpaRepository.findByNomeUsuario(nome))
-                .map(ConsultaUsuarioMapper::toDTO);
+    public UsuarioDTO buscaPorNome(String nome) {
+        return usuarioJpaRepository.findByNomeUsuario(nome)
+                .map(ConsultaUsuarioMapper::toDTO)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
     @Transactional
