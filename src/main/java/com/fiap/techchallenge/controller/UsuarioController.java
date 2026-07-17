@@ -22,8 +22,8 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/{nome}")
-    public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@PathVariable String nome) {
+    @GetMapping
+    public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam String nome) {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }
 
@@ -33,9 +33,9 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/atualizar-informacoes")
+    @PatchMapping("/atualizar")
     public ResponseEntity<Void> atualizarInformacoes(@RequestBody UsuarioDTO usuarioDTO) {
-      // todo logica de atualizar informacoes
+        usuarioService.atualizarUsuario(usuarioDTO);
         return ResponseEntity.noContent().build();
     }
 }

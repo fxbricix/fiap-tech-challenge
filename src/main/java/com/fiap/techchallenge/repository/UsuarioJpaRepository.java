@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Integer>{
-    public Optional<List<UsuarioEntity>> findByNomeUsuario(String nomeUsuario);
-    public Optional<UsuarioEntity> findByEmail(String email);
-    public boolean existsByEmail(String email);
+    public List<UsuarioEntity> findByNomeUsuarioContainingIgnoreCase(String nomeUsuario);
+    Optional<UsuarioEntity> findByEmail(String email);
+    boolean existsByEmail(String email);
 }
