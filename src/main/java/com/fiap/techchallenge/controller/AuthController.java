@@ -25,12 +25,6 @@ public class AuthController {
         this.securityService = securityService;
     }
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioDTO> cadastrar(@RequestBody @Valid CriarUsuarioDTO usuarioDTO) {
-        usuarioService.criarUsuario(usuarioDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     @PostMapping("/login")
     public ResponseEntity<Object> logar(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
         var consulta = usuarioService.buscarUsuarioPorEmail(usuarioDTO.email());
