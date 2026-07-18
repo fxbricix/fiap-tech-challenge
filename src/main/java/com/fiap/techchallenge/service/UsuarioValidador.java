@@ -20,9 +20,7 @@ public class UsuarioValidador {
     }
 
     public void validarCadastro(CriarUsuarioDTO usuarioDTO) {
-        if (usuarioRepository.existePorEmail(usuarioDTO.getEmail())) {
-            throw new IllegalArgumentException("Usuário com este email já existe");
-        }
+        validarEmailDuplicado(usuarioDTO.getEmail());
         if (usuarioDTO.getLogin() != null && usuarioRepository.existePorLogin(usuarioDTO.getLogin())) {
             throw new IllegalArgumentException("Usuário com este login já existe");
         }
@@ -31,6 +29,12 @@ public class UsuarioValidador {
     public void validarSenhaAtual(TrocaSenhaUsuarioDTO dto, UsuarioEntity entity) {
         if (!securityService.compararSenha(dto.senhaAtual(), entity.getSenhaHash())) {
             throw new IllegalArgumentException("Senha atual incorreta");
+        }
+    }
+
+    public void validarEmailDuplicado(String email) {
+        if (usuarioRepository.existePorEmail(email)) {
+            throw new IllegalArgumentException("Usuário com este email já existe");
         }
     }
 }
