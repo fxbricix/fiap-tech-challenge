@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.controller;
 
-import com.fiap.techchallenge.dto.ResponseDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.service.UsuarioService;
 import com.fiap.techchallenge.swagger.UsuarioControllerSwager;

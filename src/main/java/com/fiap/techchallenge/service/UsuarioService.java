@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
-import com.fiap.techchallenge.dto.ResponseDTO;
 import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.entity.UsuarioEntity;
@@ -9,7 +8,6 @@ import com.fiap.techchallenge.exception.NotFoundException;
 import com.fiap.techchallenge.mapper.ConsultaUsuarioMapper;
 import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
 import com.fiap.techchallenge.mapper.AtualizarUsuarioMapper;
-import com.fiap.techchallenge.repository.UsuarioJpaRepository;
 import com.fiap.techchallenge.repository.UsuarioRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

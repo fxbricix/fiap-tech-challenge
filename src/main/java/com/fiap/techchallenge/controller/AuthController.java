@@ -44,10 +44,9 @@ public class AuthController implements AuthControllerSwagger {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // TODO MELHORAR RETORNO BODY PERSONALIZADO
     @PatchMapping("/trocar-senha")
     public ResponseEntity<Object> trocarSenha(Authentication authentication, @RequestBody @Valid TrocaSenhaUsuarioDTO usuarioDTO) {
         usuarioService.atualizarSenha(authentication.getName(), usuarioDTO);
-        return ResponseEntity.ok("Senha alterada com sucesso");
+        return ResponseEntity.ok(Map.of("message", "Senha atualizada com sucesso"));
     }
 }

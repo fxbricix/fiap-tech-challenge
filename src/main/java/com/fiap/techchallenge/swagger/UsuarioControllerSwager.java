@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.swagger;
 
-import com.fiap.techchallenge.dto.ResponseDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
