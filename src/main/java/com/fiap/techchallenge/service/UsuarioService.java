@@ -50,12 +50,6 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public UsuarioEntity buscarUsuarioPorEmail(String email) {
-        return usuarioRepository.buscaPorEmail(email)
-                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
-    }
-
-    @Transactional(readOnly = true)
     public UsuarioEntity buscarUsuarioPorLogin(String login) {
         return usuarioRepository.buscaPorLogin(login)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
