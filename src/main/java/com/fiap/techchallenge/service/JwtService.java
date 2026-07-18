@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.service;
 
+import com.fiap.techchallenge.exception.TokenGenerateException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -43,7 +44,7 @@ public class JwtService {
                     .signWith(getKey())
                     .compact();
         } catch (Exception ex) {
-            throw new RuntimeException("Erro ao gerar token JWT", ex);
+            throw new TokenGenerateException("Erro ao gerar token JWT");
         }
     }
 

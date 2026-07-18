@@ -33,6 +33,7 @@ public class AuthController implements AuthControllerSwagger {
         this.jwtService = jwtService;
     }
 
+    // TODO SEGREGAR PARA SECURITY SERVICE
     @PostMapping("/login")
     public ResponseEntity<Object> logar(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
         log.info("Tentativa de login para o usuário: {}", usuarioDTO.login());
