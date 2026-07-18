@@ -25,24 +25,16 @@ public class AuthController implements AuthControllerSwagger {
 
     private UsuarioService usuarioService;
     private SecurityService securityService;
-    private JwtService jwtService;
 
-    public AuthController(UsuarioService usuarioService, SecurityService securityService, JwtService jwtService) {
+    public AuthController(UsuarioService usuarioService, SecurityService securityService) {
         this.usuarioService = usuarioService;
         this.securityService = securityService;
-        this.jwtService = jwtService;
     }
 
-    // TODO SEGREGAR PARA SECURITY SERVICE
     @PostMapping("/login")
     public ResponseEntity<Object> logar(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
         log.info("Tentativa de login para o usuário: {}", usuarioDTO.login());
-        var consulta = usuarioService.buscarUsuarioPorLogin(usuarioDTO.login());
-        if (!securityService.compararSenha(usuarioDTO.senha(), consulta.getSenhaHash())) {
-            throw new NotAuthorizedException("Credenciais inválidas");
-        }
-        var userDetails = new UsuarioDetails(consulta);
-        String token = jwtService.gerarToken(userDetails);
+        String token = securityService.logar(usuarioDTO);
         return ResponseEntity.ok(Map.of("token", token));
     }
 
