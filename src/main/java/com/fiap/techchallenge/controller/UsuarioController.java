@@ -30,6 +30,7 @@ public class UsuarioController implements UsuarioControllerSwager {
 
     @PatchMapping("/atualizar")
     public ResponseEntity<Void> atualizarInformacoes(@RequestBody UsuarioDTO usuarioDTO) {
+        // TODO : USUARIO SO PODER ATUALIZER SEU PROPRIO CADASTRO OU DONO ATUALIZAR TUDO
         usuarioService.atualizarUsuario(usuarioDTO);
         return ResponseEntity.noContent().build();
     }
