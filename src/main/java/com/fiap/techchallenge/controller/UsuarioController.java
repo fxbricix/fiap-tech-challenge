@@ -1,13 +1,10 @@
 package com.fiap.techchallenge.controller;
 
-import com.fiap.techchallenge.dto.CriarUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.service.UsuarioService;
 import com.fiap.techchallenge.swagger.UsuarioControllerSwager;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +26,6 @@ public class UsuarioController implements UsuarioControllerSwager {
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome) {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
-    }
-
-    @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioDTO> cadastrar(@RequestBody @Valid CriarUsuarioDTO usuarioDTO) {
-        usuarioService.criarUsuario(usuarioDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/atualizar")

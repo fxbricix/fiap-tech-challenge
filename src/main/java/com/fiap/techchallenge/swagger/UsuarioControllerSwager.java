@@ -14,7 +14,5 @@ import java.util.List;
 public interface UsuarioControllerSwager {
     ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome);
 
-    ResponseEntity<UsuarioDTO> cadastrar(@RequestBody @Valid CriarUsuarioDTO usuarioDTO);
-
     ResponseEntity<Void> atualizarInformacoes(@RequestBody UsuarioDTO usuarioDTO);
 }

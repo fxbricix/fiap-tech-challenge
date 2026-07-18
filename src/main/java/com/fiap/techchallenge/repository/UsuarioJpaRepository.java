@@ -6,12 +6,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Integer>{
-    public List<UsuarioEntity> findByNomeUsuarioContainingIgnoreCase(String nomeUsuario);
+    List<UsuarioEntity> findByNomeUsuarioContainingIgnoreCase(String nomeUsuario);
     Optional<UsuarioEntity> findByEmail(String email);
     boolean existsByEmail(String email);
-    Optional<UsuarioEntity> findByLogin(String login);
+    @Query("select u from UsuarioEntity u left join fetch u.role where u.login = :login")
+    Optional<UsuarioEntity> findByLogin(@Param("login") String login);
     boolean existsByLogin(String login);
 }
