@@ -10,6 +10,7 @@ import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
 import com.fiap.techchallenge.mapper.AtualizarUsuarioMapper;
 import com.fiap.techchallenge.repository.UsuarioJpaRepository;
 import com.fiap.techchallenge.repository.UsuarioRepositoryImpl;
+import com.fiap.techchallenge.service.UsuarioValidador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +22,12 @@ public class UsuarioService {
 
     private final UsuarioRepositoryImpl usuarioRepository;
     private final SecurityService securityService;
+    private final UsuarioValidador usuarioValidador;
 
     public UsuarioService(UsuarioJpaRepository usuarioJpaRepository, SecurityService securityService) {
         this.usuarioRepository = new UsuarioRepositoryImpl(usuarioJpaRepository);
         this.securityService = securityService;
+        this.usuarioValidador = new UsuarioValidador(this.usuarioRepository);
     }
 
     @Transactional(readOnly = true)
@@ -40,13 +43,8 @@ public class UsuarioService {
 
     @Transactional
     public void criarUsuario(CriarUsuarioDTO usuarioDTO) {
+        usuarioValidador.validarCadastro(usuarioDTO);
         usuarioDTO.setSenha(securityService.criptografarSenha(usuarioDTO.getSenha()));
-        if (usuarioRepository.existePorEmail(usuarioDTO.getEmail())) {
-            throw new IllegalArgumentException("Usuário com este email já existe");
-        }
-        if (usuarioDTO.getLogin() != null && usuarioRepository.existePorLogin(usuarioDTO.getLogin())) {
-            throw new IllegalArgumentException("Usuário com este login já existe");
-        }
         usuarioRepository.salvar(CriarUsuarioMapper.toEntity(usuarioDTO));
     }
 
@@ -64,9 +62,7 @@ public class UsuarioService {
 
     @Transactional
     public void atualizarUsuario(UsuarioDTO usuarioDTO) {
-        if (usuarioDTO.login().isBlank()) {
-            throw new IllegalArgumentException("É necessário informar um login para atualizar o cadastro");
-        }
+        usuarioValidador.validarAtualizacao(usuarioDTO);
 
         usuarioRepository.buscaPorLogin(usuarioDTO.login())
                 .ifPresentOrElse(usuario -> {
