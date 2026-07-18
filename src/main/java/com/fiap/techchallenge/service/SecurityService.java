@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.LoginUsuarioDTO;
-import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.entity.UsuarioDetails;
 import com.fiap.techchallenge.exception.NotAuthorizedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityService {
 
-    private PasswordEncoder passwordEncoder;
-    private UsuarioService usuarioService;
-    private JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final UsuarioService usuarioService;
+    private final JwtService jwtService;
 
     public SecurityService(PasswordEncoder passwordEncoder, UsuarioService usuarioService, JwtService jwtService) {
         this.passwordEncoder = passwordEncoder;
