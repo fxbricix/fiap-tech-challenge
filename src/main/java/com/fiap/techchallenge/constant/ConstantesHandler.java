@@ -13,6 +13,8 @@ public class ConstantesHandler {
     public static final String CONFLITO_INTEGRIDADE_DADOS = "Conflito com a integridade dos dados.";
     public static final String RECURSO_NAO_ENCONTRADO = "Recurso não encontrado.";
     public static final String ERRO_INESPERADO = "Ocorreu um erro inesperado.";
+    public static final String ACESSO_NEGADO = "Voce nao tem acesso a este recurso.";
+    public static final String AUTENTICACAO_NECESSARIA = "Autenticacao necessaria para acessar este recurso.";
 
     private ConstantesHandler() { }
 }

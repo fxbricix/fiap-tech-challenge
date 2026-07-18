@@ -3,6 +3,7 @@ package com.fiap.techchallenge.config;
 import com.fiap.techchallenge.service.JwtService;
 import com.fiap.techchallenge.service.UsuarioDetailsService;
 import com.fiap.techchallenge.service.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,9 +15,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 public class SecurityConfig {
+
+    private final HandlerExceptionResolver resolver;
+
+    public SecurityConfig(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+        this.resolver = resolver;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,7 +53,17 @@ public class SecurityConfig {
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService, usuarioDetailsService),
                         UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(authenticationProvider(usuarioDetailsService));
+                .authenticationProvider(authenticationProvider(usuarioDetailsService))
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) ->
+                                resolver.resolveException(request, response, null, authException))
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                resolver.resolveException(request, response, null, accessDeniedException))
+                );
+
+
+        ;
         return http.build();
     }
 
