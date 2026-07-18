@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.exception;
 
+import com.fiap.techchallenge.constant.ConstantesHandler;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,13 +23,13 @@ public class GlobalHandlerException {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setTitle("Campos Inválidos");
+        problemDetail.setTitle(ConstantesHandler.CAMPOS_INVALIDOS_TITLE);
         List<Map<String, String>> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(fe -> Map.of("field", fe.getField(), "message", fe.getDefaultMessage()))
                 .collect(Collectors.toList());
-        problemDetail.setDetail("Existem campos inválidos na requisição.");
+        problemDetail.setDetail(ConstantesHandler.CAMPOS_INVALIDOS_DETAIL);
         problemDetail.setProperty("errors", errors);
         return ResponseEntity.badRequest().body(problemDetail);
     }
@@ -36,12 +37,12 @@ public class GlobalHandlerException {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ProblemDetail> handleConstraintViolation(ConstraintViolationException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setTitle("Parametros Invalidos");
+        problemDetail.setTitle(ConstantesHandler.PARAMETROS_INVALIDOS_TITLE);
         List<Map<String, String>> errors = ex.getConstraintViolations()
                 .stream()
                 .map(cv -> Map.of("path", cv.getPropertyPath().toString(), "message", cv.getMessage()))
                 .collect(Collectors.toList());
-        problemDetail.setDetail("Um ou mais parâmetros do request são inválidos.");
+        problemDetail.setDetail(ConstantesHandler.PARAMETROS_INVALIDOS_DETAIL);
         problemDetail.setProperty("errors", errors);
         return ResponseEntity.badRequest().body(problemDetail);
     }
@@ -56,14 +57,14 @@ public class GlobalHandlerException {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ProblemDetail> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setDetail("Corpo da requisição inválido ou JSON malformado.");
+        problemDetail.setDetail(ConstantesHandler.CORPO_REQUISICAO_INVALIDO);
         return ResponseEntity.badRequest().body(problemDetail);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<ProblemDetail> handleDataIntegrity(DataIntegrityViolationException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
-        problemDetail.setDetail("Conflito com a integridade dos dados.");
+        problemDetail.setDetail(ConstantesHandler.CONFLITO_INTEGRIDADE_DADOS);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 
@@ -77,14 +78,14 @@ public class GlobalHandlerException {
     @ExceptionHandler({EmptyResultDataAccessException.class, NoSuchElementException.class, NotFoundException.class})
     public ResponseEntity<ProblemDetail> handleNotFound(RuntimeException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problemDetail.setDetail(ex.getMessage() != null ? ex.getMessage() : "Recurso não encontrado.");
+        problemDetail.setDetail(ex.getMessage() != null ? ex.getMessage() : ConstantesHandler.RECURSO_NAO_ENCONTRADO);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleGenericException(Exception e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        problemDetail.setDetail("Ocorreu um erro inesperado.");
+        problemDetail.setDetail(ConstantesHandler.ERRO_INESPERADO);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail);
     }
 }
