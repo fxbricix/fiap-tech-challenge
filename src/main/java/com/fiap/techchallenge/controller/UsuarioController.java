@@ -3,6 +3,7 @@ package com.fiap.techchallenge.controller;
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.service.UsuarioService;
+import com.fiap.techchallenge.swagger.UsuarioControllerSwager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/usuarios")
 @Slf4j
 @Validated
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerSwager {
 
     private final UsuarioService usuarioService;
 

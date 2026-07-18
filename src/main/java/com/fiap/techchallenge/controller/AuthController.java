@@ -4,13 +4,14 @@ import com.fiap.techchallenge.dto.LoginUsuarioDTO;
 import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
 import com.fiap.techchallenge.service.SecurityService;
 import com.fiap.techchallenge.service.UsuarioService;
+import com.fiap.techchallenge.swagger.AuthControllerSwagger;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")
-public class AuthController {
+public class AuthController implements AuthControllerSwagger {
 
     private UsuarioService usuarioService;
     private SecurityService securityService;
