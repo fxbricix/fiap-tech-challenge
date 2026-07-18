@@ -12,10 +12,12 @@ public class SecurityService {
 
     private PasswordEncoder passwordEncoder;
     private UsuarioService usuarioService;
+    private JwtService jwtService;
 
-    public SecurityService(PasswordEncoder passwordEncoder, UsuarioService usuarioService) {
+    public SecurityService(PasswordEncoder passwordEncoder, UsuarioService usuarioService, JwtService jwtService) {
         this.passwordEncoder = passwordEncoder;
         this.usuarioService = usuarioService;
+        this.jwtService = jwtService;
     }
 
     public String criptografarSenha(String senha) {
@@ -33,6 +35,6 @@ public class SecurityService {
         }
         var userDetails = new UsuarioDetails(consulta);
 
-        return jwtService.gerarToken(userDetails);;
+        return jwtService.gerarToken(userDetails);
     }
 }
