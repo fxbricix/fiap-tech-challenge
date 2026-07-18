@@ -10,7 +10,6 @@ import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
 import com.fiap.techchallenge.mapper.AtualizarUsuarioMapper;
 import com.fiap.techchallenge.repository.UsuarioJpaRepository;
 import com.fiap.techchallenge.repository.UsuarioRepositoryImpl;
-import com.fiap.techchallenge.service.UsuarioValidador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +23,12 @@ public class UsuarioService {
     private final SecurityService securityService;
     private final UsuarioValidador usuarioValidador;
 
-    public UsuarioService(UsuarioJpaRepository usuarioJpaRepository, SecurityService securityService) {
-        this.usuarioRepository = new UsuarioRepositoryImpl(usuarioJpaRepository);
+    public UsuarioService(UsuarioRepositoryImpl usuarioRepository, SecurityService securityService, UsuarioValidador usuarioValidador) {
+        this.usuarioRepository = usuarioRepository;
         this.securityService = securityService;
-        this.usuarioValidador = new UsuarioValidador(this.usuarioRepository);
+        this.usuarioValidador = usuarioValidador;
     }
+
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> buscaPorNome(String nome) {
@@ -75,19 +75,17 @@ public class UsuarioService {
 
     @Transactional
     public void atualizarSenha(TrocaSenhaUsuarioDTO trocaSenhaUsuarioDTO){
+
+        UsuarioEntity usuario = usuarioRepository
+                .buscaPorLogin(trocaSenhaUsuarioDTO.login())
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+
+        usuarioValidador.validarSenhaAtual(trocaSenhaUsuarioDTO, usuario);
+
+        usuario.setSenhaHash(securityService.criptografarSenha(trocaSenhaUsuarioDTO.novaSenha()));
+        usuario.setAtualizadoEm(Instant.now());
+        usuarioRepository.salvar(usuario);
         var usuarioSalvo = usuarioRepository.buscaPorLogin(trocaSenhaUsuarioDTO.login());
-        if (usuarioSalvo.isPresent()) {
-            var usuario = usuarioSalvo.get();
-            if (securityService.compararSenha(trocaSenhaUsuarioDTO.senhaAtual(), usuario.getSenhaHash())) {
-                usuario.setSenhaHash(securityService.criptografarSenha(trocaSenhaUsuarioDTO.novaSenha()));
-                usuario.setAtualizadoEm(Instant.now());
-                usuarioRepository.salvar(usuario);
-            } else {
-                throw new IllegalArgumentException("Senha atual incorreta");
-            }
-        } else {
-            throw new NotFoundException("Usuário não encontrado");
-        }
     }
 }
 

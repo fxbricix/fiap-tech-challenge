@@ -1,10 +1,12 @@
 package com.fiap.techchallenge.repository;
 
 import com.fiap.techchallenge.entity.UsuarioEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class UsuarioRepositoryImpl implements IUsuarioRepository{
 
     private final UsuarioJpaRepository repository;

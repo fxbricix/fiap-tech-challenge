@@ -9,8 +9,10 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.yaml.snakeyaml.scanner.Constant;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,14 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalHandlerException {
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ProblemDetail> handleMissingRequestParam(MissingServletRequestParameterException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle(ConstantesHandler.PARAMETROS_INVALIDOS_TITLE);
+        problemDetail.setDetail(ConstantesHandler.PARAMETROS_INVALIDOS_DETAIL + ex.getParameterName());
+        return ResponseEntity.badRequest().body(problemDetail);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ProblemDetail> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
