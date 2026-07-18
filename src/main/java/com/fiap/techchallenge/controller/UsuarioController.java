@@ -25,14 +25,15 @@ public class UsuarioController implements UsuarioControllerSwager {
         this.usuarioService = usuarioService;
     }
 
+    // TODO DEIXAR SÓ O DONO LISTAR TODOS OS CLIENTES COM NOME
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome) {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }
 
+    // TODO RETORNAR O BODY ATUALIZADO SALVO - NAO RETORNAR SENHA!
     @PatchMapping("/me")
     public ResponseEntity<UsuarioDTO> atualizarInformacoes(Authentication authentication, @RequestBody UsuarioDTO usuarioDTO) {
-        // TODO : USUARIO SO PODER ATUALIZER SEU PROPRIO CADASTRO OU DONO ATUALIZAR TUDO
         var retorno = usuarioService.atualizarUsuario(authentication.getName(), usuarioDTO);
         return ResponseEntity.ok(retorno);
     }
