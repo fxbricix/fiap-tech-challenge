@@ -1,11 +1,11 @@
 package com.fiap.techchallenge.swagger;
 
-import com.fiap.techchallenge.dto.CriarUsuarioDTO;
+import com.fiap.techchallenge.dto.ResponseDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,5 +14,5 @@ import java.util.List;
 public interface UsuarioControllerSwager {
     ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome);
 
-    ResponseEntity<Void> atualizarInformacoes(@RequestBody UsuarioDTO usuarioDTO);
+    ResponseEntity<UsuarioDTO> atualizarInformacoes(Authentication authentication, @RequestBody UsuarioDTO usuarioDTO);
 }

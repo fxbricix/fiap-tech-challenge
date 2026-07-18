@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
+import com.fiap.techchallenge.dto.ResponseDTO;
 import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
 import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.entity.UsuarioEntity;
@@ -61,16 +62,14 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void atualizarUsuario(UsuarioDTO usuarioDTO) {
-        usuarioValidador.validarAtualizacao(usuarioDTO);
+    public UsuarioDTO atualizarUsuario(String login, UsuarioDTO usuarioDTO) {
+        UsuarioEntity usuario = usuarioRepository
+                .buscaPorLogin(login)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
-        usuarioRepository.buscaPorLogin(usuarioDTO.login())
-                .ifPresentOrElse(usuario -> {
-                    AtualizarUsuarioMapper.merge(usuarioDTO, usuario);
-                    usuarioRepository.salvar(usuario);
-                }, () -> {
-                    throw new NotFoundException("Usuário não encontrado");
-                });
+        AtualizarUsuarioMapper.merge(usuarioDTO, usuario);
+        usuarioRepository.salvar(usuario);
+        return usuarioDTO;
     }
 
     @Transactional

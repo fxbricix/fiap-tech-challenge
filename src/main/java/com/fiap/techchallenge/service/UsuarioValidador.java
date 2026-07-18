@@ -28,12 +28,6 @@ public class UsuarioValidador {
         }
     }
 
-    public void validarAtualizacao(UsuarioDTO usuarioDTO) {
-        if (usuarioDTO.login() == null || usuarioDTO.login().isBlank()) {
-            throw new IllegalArgumentException("É necessário informar um login para atualizar o cadastro");
-        }
-    }
-
     public void validarSenhaAtual(TrocaSenhaUsuarioDTO dto, UsuarioEntity entity) {
         if (!securityService.compararSenha(dto.senhaAtual(), entity.getSenhaHash())) {
             throw new IllegalArgumentException("Senha atual incorreta");

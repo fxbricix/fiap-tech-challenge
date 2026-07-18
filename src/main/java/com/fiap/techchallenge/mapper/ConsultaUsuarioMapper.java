@@ -11,7 +11,6 @@ public final class ConsultaUsuarioMapper {
         if (u == null) return null;
         return new UsuarioDTO(
                 u.getNomeUsuario(),
-                u.getLogin(),
                 u.getEmail(),
                 EnderecoMapper.toDTO(u.getEndereco()),
                 u.getRole().getNome()
