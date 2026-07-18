@@ -73,10 +73,10 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void atualizarSenha(TrocaSenhaUsuarioDTO trocaSenhaUsuarioDTO){
+    public void atualizarSenha(String login, TrocaSenhaUsuarioDTO trocaSenhaUsuarioDTO){
 
         UsuarioEntity usuario = usuarioRepository
-                .buscaPorLogin(trocaSenhaUsuarioDTO.login())
+                .buscaPorLogin(login)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
         usuarioValidador.validarSenhaAtual(trocaSenhaUsuarioDTO, usuario);

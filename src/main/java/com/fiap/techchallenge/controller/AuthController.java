@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -51,8 +52,8 @@ public class AuthController implements AuthControllerSwagger {
     }
 
     @PatchMapping("/trocar-senha")
-    public ResponseEntity<Object> trocarSenha(@RequestBody @Valid TrocaSenhaUsuarioDTO usuarioDTO) {
-        usuarioService.atualizarSenha(usuarioDTO);
+    public ResponseEntity<Object> trocarSenha(Authentication authentication, @RequestBody @Valid TrocaSenhaUsuarioDTO usuarioDTO) {
+        usuarioService.atualizarSenha(authentication.getName(), usuarioDTO);
         return ResponseEntity.ok("Senha alterada com sucesso");
     }
 }
