@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fiap.techchallenge.constant.ConstantesValidacao;
 import com.fiap.techchallenge.entity.RoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,24 +18,24 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CriarUsuarioDTO {
 
-    @NotBlank(message = "Nome do usuário não pode ser vazio")
+    @NotBlank(message = ConstantesValidacao.NOME_USUARIO_VAZIO)
     private String nome;
 
-    @NotBlank
-    @Email(message = "O email deve ser válido")
+    @NotBlank(message = ConstantesValidacao.EMAIL_INVALIDO)
+    @Email(message = ConstantesValidacao.EMAIL_INVALIDO)
     private String email;
 
-    @NotBlank
-    @Size(min = 3, max = 50, message = "O login deve ter entre 3 e 50 caracteres")
+    @NotBlank(message = ConstantesValidacao.LOGIN_INVALIDO)
+    @Size(min = 3, max = 50, message = ConstantesValidacao.LOGIN_INVALIDO)
     private String login;
 
-    @NotBlank
+    @NotBlank(message = ConstantesValidacao.SENHA_VAZIA)
     private String senha;
 
-    @NotNull(message = "Role não pode ser nula")
+    @NotNull(message = ConstantesValidacao.ROLE_NULA)
     private RoleEnum role;
 
-    @NotNull
+    @NotNull(message = ConstantesValidacao.ENDERECO_NULO)
     @JsonProperty("endereco")
     private EnderecoDTO enderecoDTO;
 }

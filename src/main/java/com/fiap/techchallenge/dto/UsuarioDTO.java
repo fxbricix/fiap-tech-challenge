@@ -1,14 +1,15 @@
 package com.fiap.techchallenge.dto;
 
+import com.fiap.techchallenge.constant.ConstantesValidacao;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 public record UsuarioDTO(
-        @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+        @Size(min = 3, max = 100, message = ConstantesValidacao.NOME_TAMANHO)
         String nome,
-        @Size(min = 3, max = 50, message = "O login deve ter entre 3 e 50 caracteres")
+        @Size(min = 3, max = 50, message = ConstantesValidacao.LOGIN_TAMANHO)
         String login,
-        @Email(message = "O email deve ser válido")
+        @Email(message = ConstantesValidacao.EMAIL_INVALIDO)
         String email,
         EnderecoDTO endereco,
         String role

@@ -1,24 +1,25 @@
 package com.fiap.techchallenge.dto;
 
+import com.fiap.techchallenge.constant.ConstantesValidacao;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record EnderecoDTO (
-        @NotBlank
+        @NotBlank(message = ConstantesValidacao.RUA_OBRIGATORIA)
         String rua,
-        @NotBlank
+        @NotBlank(message = ConstantesValidacao.NUMERO_OBRIGATORIO)
         String numero,
-        @NotBlank
+        @NotBlank(message = ConstantesValidacao.COMPLEMENTO_OBRIGATORIO)
         String complemento,
-        @NotBlank
+        @NotBlank(message = ConstantesValidacao.BAIRRO_OBRIGATORIO)
         String bairro,
-        @NotBlank
+        @NotBlank(message = ConstantesValidacao.CIDADE_OBRIGATORIA)
         String cidade,
-        @NotBlank
-        @Size(min = 2, max = 2, message = "O estado deve ter exatamente 2 caracteres")
+        @NotBlank(message = ConstantesValidacao.ESTADO_INVALIDO)
+        @Size(min = 2, max = 2, message = ConstantesValidacao.ESTADO_INVALIDO)
         String estado,
-        @NotBlank
-        @Size(min = 8, max = 8, message = "O CEP deve ter exatamente 8 caracteres")
+        @NotBlank(message = ConstantesValidacao.CEP_INVALIDO)
+        @Size(min = 8, max = 8, message = ConstantesValidacao.CEP_INVALIDO)
         String cep
 ){
 }
