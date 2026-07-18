@@ -9,6 +9,7 @@ import com.fiap.techchallenge.mapper.ConsultaUsuarioMapper;
 import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
 import com.fiap.techchallenge.mapper.AtualizarUsuarioMapper;
 import com.fiap.techchallenge.repository.UsuarioJpaRepository;
+import com.fiap.techchallenge.repository.UsuarioRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,17 +19,17 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
-    private final UsuarioJpaRepository usuarioJpaRepository;
+    private final UsuarioRepositoryImpl usuarioRepository;
     private final SecurityService securityService;
 
     public UsuarioService(UsuarioJpaRepository usuarioJpaRepository, SecurityService securityService) {
-        this.usuarioJpaRepository = usuarioJpaRepository;
+        this.usuarioRepository = new UsuarioRepositoryImpl(usuarioJpaRepository);
         this.securityService = securityService;
     }
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> buscaPorNome(String nome) {
-        List<UsuarioEntity> encontrados = usuarioJpaRepository.findByNomeUsuarioContainingIgnoreCase(nome);
+        List<UsuarioEntity> encontrados = usuarioRepository.buscaPorNome(nome);
         if (encontrados == null || encontrados.isEmpty()) {
             throw new NotFoundException("Usuário não encontrado");
         }
@@ -40,24 +41,24 @@ public class UsuarioService {
     @Transactional
     public void criarUsuario(CriarUsuarioDTO usuarioDTO) {
         usuarioDTO.setSenha(securityService.criptografarSenha(usuarioDTO.getSenha()));
-        if (usuarioJpaRepository.existsByEmail(usuarioDTO.getEmail())) {
+        if (usuarioRepository.existePorEmail(usuarioDTO.getEmail())) {
             throw new IllegalArgumentException("Usuário com este email já existe");
         }
-        if (usuarioDTO.getLogin() != null && usuarioJpaRepository.existsByLogin(usuarioDTO.getLogin())) {
+        if (usuarioDTO.getLogin() != null && usuarioRepository.existePorLogin(usuarioDTO.getLogin())) {
             throw new IllegalArgumentException("Usuário com este login já existe");
         }
-        usuarioJpaRepository.save(CriarUsuarioMapper.toEntity(usuarioDTO));
+        usuarioRepository.salvar(CriarUsuarioMapper.toEntity(usuarioDTO));
     }
 
     @Transactional(readOnly = true)
     public UsuarioEntity buscarUsuarioPorEmail(String email) {
-        return usuarioJpaRepository.findByEmail(email)
+        return usuarioRepository.buscaPorEmail(email)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
     @Transactional(readOnly = true)
     public UsuarioEntity buscarUsuarioPorLogin(String login) {
-        return usuarioJpaRepository.findByLogin(login)
+        return usuarioRepository.buscaPorLogin(login)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
@@ -67,10 +68,10 @@ public class UsuarioService {
             throw new IllegalArgumentException("É necessário informar um login para atualizar o cadastro");
         }
 
-        usuarioJpaRepository.findByLogin(usuarioDTO.login())
+        usuarioRepository.buscaPorLogin(usuarioDTO.login())
                 .ifPresentOrElse(usuario -> {
                     AtualizarUsuarioMapper.merge(usuarioDTO, usuario);
-                    usuarioJpaRepository.save(usuario);
+                    usuarioRepository.salvar(usuario);
                 }, () -> {
                     throw new NotFoundException("Usuário não encontrado");
                 });
@@ -78,13 +79,13 @@ public class UsuarioService {
 
     @Transactional
     public void atualizarSenha(TrocaSenhaUsuarioDTO trocaSenhaUsuarioDTO){
-        var usuarioSalvo = usuarioJpaRepository.findByLogin(trocaSenhaUsuarioDTO.login());
+        var usuarioSalvo = usuarioRepository.buscaPorLogin(trocaSenhaUsuarioDTO.login());
         if (usuarioSalvo.isPresent()) {
             var usuario = usuarioSalvo.get();
             if (securityService.compararSenha(trocaSenhaUsuarioDTO.senhaAtual(), usuario.getSenhaHash())) {
                 usuario.setSenhaHash(securityService.criptografarSenha(trocaSenhaUsuarioDTO.novaSenha()));
                 usuario.setAtualizadoEm(Instant.now());
-                usuarioJpaRepository.save(usuario);
+                usuarioRepository.salvar(usuario);
             } else {
                 throw new IllegalArgumentException("Senha atual incorreta");
             }
