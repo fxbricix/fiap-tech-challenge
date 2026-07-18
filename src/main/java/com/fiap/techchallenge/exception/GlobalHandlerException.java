@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalHandlerException {
 
+    //TODO DAR UM BODY PARA O 403 FORBIDDEN DO SECURITY
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ProblemDetail> handleMissingRequestParam(MissingServletRequestParameterException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
