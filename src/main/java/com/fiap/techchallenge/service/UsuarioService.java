@@ -85,7 +85,6 @@ public class UsuarioService {
         usuario.setSenhaHash(securityService.criptografarSenha(trocaSenhaUsuarioDTO.novaSenha()));
         usuario.setAtualizadoEm(Instant.now());
         usuarioRepository.salvar(usuario);
-        var usuarioSalvo = usuarioRepository.buscaPorLogin(trocaSenhaUsuarioDTO.login());
     }
 }
 
