@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> logar(@RequestBody @Valid LoginUsuarioDTO usuarioDTO) {
-        var consulta = usuarioService.buscarUsuarioPorEmail(usuarioDTO.email());
+        var consulta = usuarioService.buscarUsuarioPorLogin(usuarioDTO.login());
         var login = securityService.login(usuarioDTO, consulta.getSenhaHash());
         return ResponseEntity.ok(login);
     }

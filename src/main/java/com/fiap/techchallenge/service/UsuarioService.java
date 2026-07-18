@@ -43,6 +43,9 @@ public class UsuarioService {
         if (usuarioJpaRepository.existsByEmail(usuarioDTO.getEmail())) {
             throw new IllegalArgumentException("Usuário com este email já existe");
         }
+        if (usuarioDTO.getLogin() != null && usuarioJpaRepository.existsByLogin(usuarioDTO.getLogin())) {
+            throw new IllegalArgumentException("Usuário com este login já existe");
+        }
         usuarioJpaRepository.save(CriarUsuarioMapper.toEntity(usuarioDTO));
     }
 
@@ -52,13 +55,19 @@ public class UsuarioService {
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
+    @Transactional(readOnly = true)
+    public UsuarioEntity buscarUsuarioPorLogin(String login) {
+        return usuarioJpaRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+    }
+
     @Transactional
     public void atualizarUsuario(UsuarioDTO usuarioDTO) {
-        if (usuarioDTO.email().isBlank()) {
-            throw new IllegalArgumentException("É necessário informar um e-mail para atualizar o cadastro");
+        if (usuarioDTO.login().isBlank()) {
+            throw new IllegalArgumentException("É necessário informar um login para atualizar o cadastro");
         }
 
-        usuarioJpaRepository.findByEmail(usuarioDTO.email())
+        usuarioJpaRepository.findByLogin(usuarioDTO.login())
                 .ifPresentOrElse(usuario -> {
                     AtualizarUsuarioMapper.merge(usuarioDTO, usuario);
                     usuarioJpaRepository.save(usuario);
@@ -69,7 +78,7 @@ public class UsuarioService {
 
     @Transactional
     public void atualizarSenha(TrocaSenhaUsuarioDTO trocaSenhaUsuarioDTO){
-        var usuarioSalvo = usuarioJpaRepository.findByEmail(trocaSenhaUsuarioDTO.email());
+        var usuarioSalvo = usuarioJpaRepository.findByLogin(trocaSenhaUsuarioDTO.login());
         if (usuarioSalvo.isPresent()) {
             var usuario = usuarioSalvo.get();
             if (securityService.compararSenha(trocaSenhaUsuarioDTO.senhaAtual(), usuario.getSenhaHash())) {

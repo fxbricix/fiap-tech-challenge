@@ -22,6 +22,9 @@ public class CriarUsuarioDTO {
     private String email;
 
     @NotBlank
+    private String login;
+
+    @NotBlank
     private String senha;
 
     @NotNull(message = "Role não pode ser nula")

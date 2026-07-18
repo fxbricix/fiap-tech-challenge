@@ -17,6 +17,7 @@ public final class CriarUsuarioMapper {
         UsuarioEntity u = new UsuarioEntity();
         u.setNomeUsuario(dto.getNome());
         u.setEmail(dto.getEmail());
+        u.setLogin(dto.getLogin());
         u.setSenhaHash(dto.getSenha());
         Instant now = Instant.now();
         u.setCriadoEm(now);

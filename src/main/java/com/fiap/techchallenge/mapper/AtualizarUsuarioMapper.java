@@ -16,6 +16,9 @@ public final class AtualizarUsuarioMapper {
         if (dto.nome() != null && !dto.nome().isBlank()) {
             entity.setNomeUsuario(dto.nome());
         }
+        if (dto.email() != null && !dto.email().isBlank()) {
+            entity.setEmail(dto.email());
+        }
 
         if (dto.endereco() != null) {
             EnderecoEntity current = entity.getEndereco();

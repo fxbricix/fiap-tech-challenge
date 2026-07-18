@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.dto;
 
 public record LoginUsuarioDTO(
-    String email,
+    String login,
     String senha
 ) {
 }
