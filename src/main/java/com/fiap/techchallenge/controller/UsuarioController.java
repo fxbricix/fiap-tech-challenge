@@ -23,7 +23,7 @@ public class UsuarioController implements UsuarioControllerSwager {
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
-
+    
     // TODO DEIXAR SÓ O DONO LISTAR TODOS OS CLIENTES COM NOME
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome) {

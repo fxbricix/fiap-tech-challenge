@@ -61,7 +61,7 @@ public class UsuarioService {
 
         AtualizarUsuarioMapper.merge(usuarioDTO, usuario);
         usuarioRepository.salvar(usuario);
-        return usuarioDTO;
+        return ConsultaUsuarioMapper.toDTO(usuario);
     }
 
     @Transactional
