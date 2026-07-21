@@ -26,7 +26,7 @@ public class CriarUsuarioDTO {
     private String email;
 
     @NotBlank(message = ConstantesValidacao.LOGIN_INVALIDO)
-    @Size(min = 3, max = 50, message = ConstantesValidacao.LOGIN_INVALIDO)
+    @Size(min = 3, max = 50, message = ConstantesValidacao.LOGIN_TAMANHO)
     private String login;
 
     @NotBlank(message = ConstantesValidacao.SENHA_VAZIA)

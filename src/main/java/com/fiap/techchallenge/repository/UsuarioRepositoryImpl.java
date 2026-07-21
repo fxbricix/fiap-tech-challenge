@@ -26,11 +26,6 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository{
     }
 
     @Override
-    public Optional<UsuarioEntity> buscaPorEmail(String email) {
-        return repository.findByEmail(email);
-    }
-
-    @Override
     public boolean existePorEmail(String email) {
         return repository.existsByEmail(email);
     }

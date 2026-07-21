@@ -2,12 +2,10 @@ package com.fiap.techchallenge.service;
 
 import com.fiap.techchallenge.dto.CriarUsuarioDTO;
 import com.fiap.techchallenge.dto.TrocaSenhaUsuarioDTO;
-import com.fiap.techchallenge.dto.UsuarioDTO;
 import com.fiap.techchallenge.entity.UsuarioEntity;
 import com.fiap.techchallenge.exception.UserValidationException;
 import com.fiap.techchallenge.repository.UsuarioRepositoryImpl;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class UsuarioValidador {
