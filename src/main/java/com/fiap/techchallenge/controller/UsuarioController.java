@@ -1,11 +1,13 @@
 package com.fiap.techchallenge.controller;
 
 import com.fiap.techchallenge.dto.UsuarioDTO;
+import com.fiap.techchallenge.service.SecurityService;
 import com.fiap.techchallenge.service.UsuarioService;
 import com.fiap.techchallenge.swagger.UsuarioControllerSwager;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,8 @@ public class UsuarioController implements UsuarioControllerSwager {
         this.usuarioService = usuarioService;
     }
     
-    // TODO DEIXAR SÓ O DONO LISTAR TODOS OS CLIENTES COM NOME
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_DONO')")
     public ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome) {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }

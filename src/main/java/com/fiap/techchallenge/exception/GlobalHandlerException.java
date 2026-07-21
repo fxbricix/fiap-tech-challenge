@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -71,6 +72,13 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ProblemDetail> handleAccessDenied(AccessDeniedException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        problemDetail.setDetail(ConstantesHandler.ACESSO_NEGADO);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(problemDetail);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ProblemDetail> handleAuthorizationDenied(AuthorizationDeniedException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
         problemDetail.setDetail(ConstantesHandler.ACESSO_NEGADO);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(problemDetail);
