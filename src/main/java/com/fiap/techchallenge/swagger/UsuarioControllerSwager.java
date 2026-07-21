@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+// TODO DOCUMENTAR
 @Tag(name = "Usuário", description = "API para gerenciamento de usuários")
 public interface UsuarioControllerSwager {
     ResponseEntity<List<UsuarioDTO>> buscaUsuarioPorNome(@RequestParam @NotBlank String nome);

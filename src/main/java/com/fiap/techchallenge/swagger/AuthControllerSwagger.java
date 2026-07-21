@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
+// TODO DOCUMENTACAO
 @Tag(name = "Auth", description = "Endpoints relacionados a login e controle de senhas")
 public interface AuthControllerSwagger {
     @PostMapping("/login")

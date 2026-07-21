@@ -32,6 +32,8 @@ public class UsuarioController implements UsuarioControllerSwager {
         return ResponseEntity.ok(usuarioService.buscaPorNome(nome));
     }
 
+    // TODO ATUALIZAR ROLE - SOMENTE DONO
+
     @PatchMapping("/me")
     public ResponseEntity<UsuarioDTO> atualizarInformacoes(Authentication authentication, @RequestBody UsuarioDTO usuarioDTO) {
         var retorno = usuarioService.atualizarUsuario(authentication.getName(), usuarioDTO);
