@@ -33,6 +33,8 @@ public class UsuarioController implements UsuarioControllerSwager {
     }
 
     // TODO ATUALIZAR ROLE - SOMENTE DONO
+    // TODO USUARIO DELETE PROPRIA CONTA
+    // TODO DONO APAGAR A CONTA DE QUALQUER UM MENOS A SUA PROPRIA
 
     @PatchMapping("/me")
     public ResponseEntity<UsuarioDTO> atualizarInformacoes(Authentication authentication, @RequestBody UsuarioDTO usuarioDTO) {
