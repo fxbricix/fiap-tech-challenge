@@ -17,4 +17,5 @@ public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Integ
     @Query("select u from UsuarioEntity u left join fetch u.role where u.login = :login")
     Optional<UsuarioEntity> findByLogin(@Param("login") String login);
     boolean existsByLogin(String login);
+    void deleteByLogin(String login);
 }

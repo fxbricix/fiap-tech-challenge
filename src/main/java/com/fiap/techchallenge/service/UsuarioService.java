@@ -9,6 +9,7 @@ import com.fiap.techchallenge.mapper.ConsultaUsuarioMapper;
 import com.fiap.techchallenge.mapper.CriarUsuarioMapper;
 import com.fiap.techchallenge.mapper.AtualizarUsuarioMapper;
 import com.fiap.techchallenge.repository.UsuarioRepositoryImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +77,17 @@ public class UsuarioService {
         usuario.setSenhaHash(securityService.criptografarSenha(trocaSenhaUsuarioDTO.novaSenha()));
         usuario.setAtualizadoEm(Instant.now());
         usuarioRepository.salvar(usuario);
+    }
+
+    @Transactional
+    public void apagarProprioUsuario(Authentication authentication){
+        if (!usuarioRepository.existePorLogin(authentication.getName())) {
+            throw new NotFoundException("Usuário não encontrado");
+        }
+        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DONO"))) {
+            throw new IllegalArgumentException("O dono não pode apagar sua própria conta");
+        }
+        usuarioRepository.apagarPorLogin(authentication.getName());
     }
 }
 

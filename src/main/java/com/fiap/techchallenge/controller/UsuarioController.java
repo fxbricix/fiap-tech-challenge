@@ -33,12 +33,17 @@ public class UsuarioController implements UsuarioControllerSwager {
     }
 
     // TODO ATUALIZAR ROLE - SOMENTE DONO
-    // TODO USUARIO DELETE PROPRIA CONTA
     // TODO DONO APAGAR A CONTA DE QUALQUER UM MENOS A SUA PROPRIA
 
     @PatchMapping("/me")
     public ResponseEntity<UsuarioDTO> atualizarInformacoes(Authentication authentication, @RequestBody UsuarioDTO usuarioDTO) {
         var retorno = usuarioService.atualizarUsuario(authentication.getName(), usuarioDTO);
         return ResponseEntity.ok(retorno);
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> apagarProprioUsuario(Authentication authentication) {
+        usuarioService.apagarProprioUsuario(authentication);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -11,5 +11,6 @@ public interface IUsuarioRepository {
     boolean existePorEmail(String email);
     Optional<UsuarioEntity> buscaPorLogin(String login);
     boolean existePorLogin(String login);
+    void apagarPorLogin(String login);
 }
 

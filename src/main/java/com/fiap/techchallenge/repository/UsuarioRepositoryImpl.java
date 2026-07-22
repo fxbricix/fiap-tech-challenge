@@ -39,4 +39,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository{
     public boolean existePorLogin(String login) {
         return repository.existsByLogin(login);
     }
+
+    @Override
+    public void apagarPorLogin(String login) {
+        repository.deleteByLogin(login);
+    }
+
 }
